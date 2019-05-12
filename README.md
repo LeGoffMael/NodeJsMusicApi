@@ -1,11 +1,12 @@
 # NodeJsMusicApi
-Training project with nodeJs API
+NodeJs Music API training project using Babel, Chai, Express, MongoDB & Mocha.
 
 ## To start
 
  - Installation : `npm install`
  - Mongo database : `mongodb`
- - Server MusicApi : `nodemon index` or `npm start` or `node index`
+ - Test : `npm test`
+ - App MusicApi : `npm start`
  
 ## Home
 
@@ -14,36 +15,35 @@ Training project with nodeJs API
  
 Starting web PORT value can be change with an environment variable (8080 by default).
 
+## TODO
+
+ - Change cover attribute in album model to picture
+ - Set albums endpoints from artists (/artists/:artist_id/albums/...)
+ - Setting test of albums part (add to an album, delete an artist delete his albums, ...)
+
 ## API endpoints
 
 | HTTP REQUESTS        | URL                                  | Status |
 | ---                  | ---                                  | :---:  |
 | **Artist** |
-| GET/POST             | /artists/:artist_id/albums           | OK     |
-| GET/PUT/PATCH/DELETE | /artists/:artist_id/albums/:album_id | WIP    |
-| GET                  | /artists/:artist_id/tracks           |        |
-| GET                  | /artists/:artist_id/tracks/:track_id |        |
+| GET/POST             | /artists                             | OK     |
+| GET/PUT/PATCH/DELETE | /artists/:artist_id                  | OK     |
+| GET                  | /artists/:artist_id/albums           | OK     |
+| POST                 | /artists/:artist_id/albums           | TODO   |
+| GET/PUT/PATCH/DELETE | /artists/:artist_id/albums/:album_id | TODO   |
 ||
 | **Album** |
 | GET/POST             | /albums                              | OK     |
 | GET                  | /albums/:album_id                    | OK     |
-| GET/POST             | /albums/:album_id/tracks             |        |
-| GET/PUT/PATCH/DELETE | /albums/:album_id/tracks/:track_id   |        |
-||
-| **Track** |
-| GET/POST             | /tracks                              |        |
-| GET/PUT/PATCH/DELETE | /tracks/:track_id                    |        |
-| GET/POST             | /tracks/:track_id/artists            |        |
-| GET/PUT/PATCH/DELETE | /tracks/:track_id/artists/:artist_id |        |
 
 ## Database schema
 
-| Artist    | Album     | Track     |
-| ---       | ---       | ---       |
-| id        | id        | id        |
-| name      | title     | title     |
-| firstName | year      | Artists   |
-| lastName  | cover     | Album     |
-| createdAt | Artist    | createdAt |
-| updatedAt | createdAt | updatedAt |
-|           | updatedAt |           |
+| Artist    | Album     |
+| ---       | ---       |
+| id        | id        |
+| name      | title     |
+| firstName | year      |
+| lastName  | cover     |
+| createdAt | Artist    |
+| updatedAt | createdAt |
+|           | updatedAt |

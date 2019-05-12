@@ -1,7 +1,7 @@
-const Mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 // Setup schema
-let artistSchema = Mongoose.Schema({
+let artistSchema = mongoose.Schema({
 	name: {
 		type: String,
 		required: true
@@ -15,12 +15,12 @@ let artistSchema = Mongoose.Schema({
 		required: true
 	},
 	albums: [{ // The array stores multiple IDs, creating a one-to-many "relationship"
-		type: Mongoose.Schema.Types.ObjectId,
-		ref: 'album'
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'Album'
 	}],
 },{
 	timestamps: true
 });
 
 // Export Artist model
-module.exports = Mongoose.model('artist', artistSchema);
+export default mongoose.model('Artist', artistSchema);

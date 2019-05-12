@@ -1,7 +1,7 @@
-const Mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 // Setup schema
-let albumSchema = Mongoose.Schema({
+let albumSchema = mongoose.Schema({
     title: {
         type: String,
         required: true
@@ -15,12 +15,12 @@ let albumSchema = Mongoose.Schema({
         required: true
     },
     artist: { // No arrays, as we want to store a single ID only.
-        type: Mongoose.Schema.Types.ObjectId,
-        ref: 'artist'
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Artist'
     } ,
 },{
 	timestamps: true
 });
 
 // Export Album model
-module.exports = Mongoose.model('album', albumSchema);
+export default mongoose.model('Album', albumSchema);
