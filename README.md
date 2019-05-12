@@ -5,7 +5,7 @@ NodeJs Music API training project using Babel, Chai, Express, MongoDB & Mocha.
 
  - Installation : `npm install`
  - Mongo database : `mongodb`
- - Test : `npm test`
+ - Launch unit tests : `npm test`
  - App MusicApi : `npm start`
  
 ## Home
@@ -19,7 +19,7 @@ Starting web PORT value can be change with an environment variable (8080 by defa
 
  - Change cover attribute in album model to picture
  - Set albums endpoints from artists (/artists/:artist_id/albums/...)
- - Setting test of albums part (add to an album, delete an artist delete his albums, ...)
+ - Setting unit tests of albums part (add to an album, delete an artist delete his albums, ...)
 
 ## API endpoints
 
