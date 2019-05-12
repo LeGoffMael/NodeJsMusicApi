@@ -1,27 +1,27 @@
 [![Build Status](https://travis-ci.org/LeGoffMael/NodeJsMusicApi.svg?branch=master)](https://travis-ci.org/LeGoffMael/NodeJsMusicApi)
 
 # NodeJsMusicApi
-NodeJs Music API training project using Babel, Chai, Express, MongoDB & Mocha.
-
-## To start
-
- - Installation : `npm install`
- - Mongo database : `mongodb`
- - Launch unit tests : `npm test`
- - App MusicApi : `npm start`
- 
-## Home
-
- - Link to home page: [http://localhost:8080/](http://localhost:8080/)
- - Link to API home page: [http://localhost:8080/api/v1/](http://localhost:8080/api/v1/)
- 
-Starting web PORT value can be change with an environment variable (8080 by default).
+NodeJs Music API is a training project using Babel, Chai, Express, MongoDB & Mocha.
 
 ## TODO
 
  - Change cover attribute in album model to picture
  - Set albums endpoints from artists (/artists/:artist_id/albums/...)
  - Setting unit tests of albums part (add to an album, delete an artist delete his albums, ...)
+ - Implement query strings (limit, offset, sort, ...)
+
+## To start
+
+ - Dependencies installation : `npm install`
+ - Launch unit tests : `npm test`
+ - App MusicApi : `npm start`
+
+## Home
+
+ - Link to home page: `/`
+ - Link to API home page: `/api/v1/`
+ 
+Starting web PORT value can be change with an environment variable (8080 by default).
 
 ## API endpoints
 
