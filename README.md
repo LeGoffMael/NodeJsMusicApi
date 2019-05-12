@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/LeGoffMael/NodeJsMusicApi.svg?branch=master)](https://travis-ci.org/LeGoffMael/NodeJsMusicApi)
+
 # NodeJsMusicApi
 NodeJs Music API training project using Babel, Chai, Express, MongoDB & Mocha.
 
