@@ -30,8 +30,7 @@ Starting web PORT value can be change with an environment variable (8080 by defa
 | **Artist** |
 | GET/POST             | /artists                             | OK     |
 | GET/PUT/PATCH/DELETE | /artists/:artist_id                  | OK     |
-| GET                  | /artists/:artist_id/albums           | OK     |
-| POST                 | /artists/:artist_id/albums           | TODO   |
+| GET/POST             | /artists/:artist_id/albums           | OK     |
 | GET/PUT/PATCH/DELETE | /artists/:artist_id/albums/:album_id | TODO   |
 ||
 | **Album** |

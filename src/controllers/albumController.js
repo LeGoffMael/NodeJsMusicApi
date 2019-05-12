@@ -96,7 +96,7 @@ export default class AlbumController {
 	}
 
 	/**
-	 * PUT or PATCH /albums/:album_id
+	 * PUT /albums/:album_id
 	 * Update an Album identified by the album_id in the request
 	 * @param {*} req express request
      * @param {*} res express response
@@ -150,4 +150,84 @@ export default class AlbumController {
 			});
 		});
 	}
+
+	/** From Artist part **/
+
+	/**
+	 * GET /artists/:artist_id/albums
+	 * Retrieve all the albums of the Artist by is artist_id
+	 * @param {*} req express request
+	 * @param {*} res express response
+	 * @returns artist albums data and status code
+	 */
+	async getArtistAlbums(req, res) {
+		Artist.findById(req.params.artist_id).populate('albums', '_id title cover year')
+			.then(artist => {
+				if(!artist) {
+					return res.status(404).json({
+						error: 'Artist doesn\'t exist.'
+					});
+				}
+				res.status(200).json(artist.albums);
+			}).catch(err => {
+			console.log("Error retrieving albums from artist id ["+req.params.artist_id+"] :" + err);
+			return res.status(500).json({
+				error: "Error retrieving albums from artist."
+			});
+		});
+	}
+
+	/**
+	 * POST /artists/:artist_id/albums
+	 * Create a new Album associated to the Artist identified by is artist_id
+	 * @param {*} req express request
+	 * @param {*} res express response
+	 * @returns artist album data and status code
+	 */
+	async createArtistAlbum(req, res) {
+		// Set Artist id
+		req.body.artist = req.params.artist_id;
+
+		return await new AlbumController().create(req, res);
+	}
+
+	/**
+	 * GET /artists/:artist_id/albums/:album_id
+	 * TODO : Retrieve a single Album identified by the album_id and associated to the Artist identified by the artist_id
+	 * @param {*} req express request
+	 * @param {*} res express response
+	 * @returns artist album data and status code
+	 */
+	async getArtistAlbumById(req, res) {
+		return res.status(501).json({
+			error: 'Endpoint not implemented yet.'
+		});
+	}
+
+	/**
+	 * PUT /artists/:artist_id/albums/:album_id
+	 * TODO : Update an Album identified by the album_id in the request and associated to the Artist identified by the artist_id
+	 * @param {*} req express request
+	 * @param {*} res express response
+	 * @returns data and status code
+	 */
+	async updateArtistAlbum(req, res) {
+		return res.status(501).json({
+			error: 'Endpoint not implemented yet.'
+		});
+	}
+
+	/**
+	 * DELETE /artists/:artist_id/albums/:album_id
+	 * TODO : Delete an Album identified by the album_id and remove it from the associated Artist identified by the artist_id
+	 * @param {*} req express request
+	 * @param {*} res express response
+	 * @returns success and status code
+	 */
+	async deleteArtistAlbum(req, res) {
+		return res.status(501).json({
+			error: 'Endpoint not implemented yet.'
+		});
+	}
+
 }

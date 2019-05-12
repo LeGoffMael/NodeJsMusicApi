@@ -74,7 +74,7 @@ export default class ArtistController {
 	}
 
 	/**
-	 * PUT or PATCH /artists/:artist_id
+	 * PUT /artists/:artist_id
 	 * Update an Artist identified by the artist_id in the request
 	 * @param {*} req express request
      * @param {*} res express response
@@ -131,38 +131,4 @@ export default class ArtistController {
 			});
 		});
 	}
-
-	/* Albums part */
-	/**
-	 * GET /artists/:artist_id/albums
-	 * Retrieve all the albums of the Artist by is artist_id
-	 * @param {*} req express request
-     * @param {*} res express response
-     * @returns artist albums data and status code
-	 */
-	async getArtistAlbums(req, res) {
-		Artist.findById(req.params.artist_id).populate('albums', '_id title cover year')
-		.then(artist => {
-			if(!artist) {
-				return res.status(404).json({
-					error: 'Artist doesn\'t exist.'
-				});
-			}
-			res.status(200).json(artist.albums);
-		}).catch(err => {
-			console.log("Error retrieving albums from artist id ["+req.params.artist_id+"] :" + err);
-			return res.status(500).json({
-				error: "Error retrieving albums from artist."
-			});
-		});
-	}
-
-	/**
-	 * POST /artists/:album_id/albums
-	 * TODO : Create a new Album associated to the Artist identified by is artist_id
-	 * @param {*} req express request
-     * @param {*} res express response
-     * @returns artist albums data and status code
-	 */
-	async createArtistAlbum(req, res) {}
 }

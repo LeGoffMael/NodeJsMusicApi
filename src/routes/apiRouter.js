@@ -8,8 +8,8 @@ export default class ApiRouter {
      * @constructor
      */
     constructor() {
-        this._artistsPath = '/artists';
-        this._albumsPath = '/albums';
+        this._artistsPath = 'artists';
+        this._albumsPath = 'albums';
 
         this._router = new Router();
 
@@ -32,33 +32,35 @@ export default class ApiRouter {
      * Set all Artist endpoints
      */
     artistsInit() {
-        this._router.route(this._artistsPath)
+        this._router.route(`/${this._artistsPath}`)
             .get(this._artistController.getAll)
             .post(this._artistController.create);
-        this._router.route(`${this._artistsPath}/:artist_id`)
+        this._router.route(`/${this._artistsPath}/:artist_id`)
             .get(this._artistController.getById)
-            .patch(this._artistController.update)
             .put(this._artistController.update)
             .delete(this._artistController.delete);
-        this._router.route(`${this._artistsPath}/:artist_id/albums`)
-            .get(this._artistController.getArtistAlbums)
-            .post(this._artistController.createArtistAlbum);
-
-        // Set albums endpoints from artists
     }
 
     /**
      * Set all Album endpoints
      */
     albumsInit() {
-        this._router.route(this._albumsPath)
+        this._router.route(`/${this._albumsPath}`)
             .get(this._albumController.getAll)
             .post(this._albumController.create);
-        this._router.route(`${this._albumsPath}/:album_id`)
+        this._router.route(`/${this._albumsPath}/:album_id`)
             .get(this._albumController.getById)
-            .patch(this._albumController.update)
             .put(this._albumController.update)
             .delete(this._albumController.delete);
+
+        // Set albums endpoints from artists
+        this._router.route(`/${this._artistsPath}/:artist_id/${this._albumsPath}`)
+            .get(this._albumController.getArtistAlbums)
+            .post(this._albumController.createArtistAlbum);
+        this._router.route(`/${this._artistsPath}/:artist_id/${this._albumsPath}/:album_id`)
+            .get(this._albumController.getArtistAlbumById)
+            .put(this._albumController.updateArtistAlbum)
+            .delete(this._albumController.deleteArtistAlbum);
     }
 
     /**
