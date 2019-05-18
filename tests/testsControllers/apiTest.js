@@ -1,7 +1,7 @@
-import mongoose from 'mongoose';
-
 import ArtistTest from '../testsControllers/artistTest';
 import AlbumTest from '../testsControllers/albumTest';
+
+import Artist from '../../src/models/artistModel';
 
 // Require the dev-dependencies
 import chai from 'chai';
@@ -27,8 +27,12 @@ export default class ApiTest {
      */
     init() {
         this.testMainPage('/api/v1');
-        this.testArtists('/api/v1/artists');
-        this.testAlbums('/api/v1/albums');
+
+        this.artistTest = new ArtistTest(this._app, '/api/v1/artists');
+        this.testArtists();
+
+        this.albumTest = new AlbumTest(this._app, '/api/v1/albums', new Artist(this.artistTest.getArtistContent()));
+        this.testAlbums();
     }
 
     /**
@@ -49,17 +53,15 @@ export default class ApiTest {
 
     /**
      * Test Artists V1 API side
-     * @param {*} artistApiUrl API URL to access to artists data
      */
-    testArtists(artistApiUrl) {
-        const artistTest = new ArtistTest(this._app, artistApiUrl);
+    testArtists() {
+        this.artistTest.startAllTests();
     }
 
     /**
      * Test Albums V1 API side
-     * @param {*} albumApiUrl API URL to access to albums data
      */
-    testAlbums(albumApiUrl) {
-        const albumTest = new AlbumTest(this._app, albumApiUrl);
+    testAlbums() {
+        this.albumTest.startAllTests();
     }
 }

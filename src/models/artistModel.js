@@ -17,9 +17,20 @@ let artistSchema = mongoose.Schema({
 	albums: [{ // The array stores multiple IDs, creating a one-to-many "relationship"
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'Album'
-	}],
+	}]
 },{
 	timestamps: true
+});
+
+artistSchema.virtual('links').get(function() {
+	return {
+		self: {
+			'href': '/api/v1/artists/' + this.id
+		},
+		related: {
+			'href': '/api/v1/artists'
+		}
+	}
 });
 
 // Export Artist model

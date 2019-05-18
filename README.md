@@ -5,9 +5,8 @@ NodeJs Music API is a training project using Babel, Chai, Express, MongoDB & Moc
 
 ## TODO
 
- - Change cover attribute in album model to picture
- - Set albums endpoints from artists (/artists/:artist_id/albums/...)
- - Setting unit tests of albums part (add to an album, delete an artist delete his albums, ...)
+ - Display `self` and `related` virtual attributes
+ - Improve unit tests of albums part (delete an artist should delete his albums, test endpoints from artist, ...)
  - Implement query strings (limit, offset, sort, ...)
 
 ## To start
@@ -31,7 +30,7 @@ Starting web PORT value can be change with an environment variable (8080 by defa
 | GET/POST             | /artists                             | OK     |
 | GET/PUT/PATCH/DELETE | /artists/:artist_id                  | OK     |
 | GET/POST             | /artists/:artist_id/albums           | OK     |
-| GET/PUT/PATCH/DELETE | /artists/:artist_id/albums/:album_id | TODO   |
+| GET/PUT/PATCH/DELETE | /artists/:artist_id/albums/:album_id | OK     |
 ||
 | **Album** |
 | GET/POST             | /albums                              | OK     |

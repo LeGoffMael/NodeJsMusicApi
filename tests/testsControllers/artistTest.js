@@ -1,4 +1,3 @@
-import mongoose from 'mongoose';
 import Artist from '../../src/models/artistModel';
 // Require the dev-dependencies
 import chai from 'chai';
@@ -17,38 +16,58 @@ export default class ArtistTest {
 
         chai.should();
         chai.use(chaiHttp);
-
-        this.startTests();
     }
+
+    getArtistContent() {
+        return {
+            name: "Drake",
+            firstName: "Aubrey Drake",
+            lastName: "Graham"
+        };
+    }
+
+    setArtistContent(name, firstName, lastName) {
+        return {
+            name: (name ? name : this.getArtistContent().name),
+            firstName: (firstName ? firstName : this.getArtistContent().firstName),
+            lastName: (lastName ? lastName : this.getArtistContent().lastName)
+        };
+    }
+
 
     /**
      * Test Artist side
      */
-    startTests() {
+    startAllTests() {
         describe ('Artists API', () => {
-            describe ('/GET', () => {
-                it('it sould GET all the artists', (done) => {
-                    chai.request(this._app)
+            this.getAllTest();
+            this.createTest();
+            this.getByIdTest();
+            this.updateTest();
+            this.deleteTest();
+        });
+    }
+
+    getAllTest() {
+        describe ('/GET', () => {
+            it('it should GET all the artists', (done) => {
+                chai.request(this._app)
                     .get(this._path)
                     .end((err, res) => {
                         res.should.have.status(200);
                         res.body.should.be.a('array');
-                        res.body.length.should.be.eql(0);
                         done();
                     });
-                });
             });
+        });
+    }
 
-            describe ('/POST', () => {
-                it('it should POST an artist', (done) => {
-                    let artist = {
-                        name: "Drake",
-                        firstName: "Aubrey Drake",
-                        lastName: "Graham"
-                    }
-                    chai.request(this._app)
+    createTest() {
+        describe ('/POST', () => {
+            it('it should POST an artist', (done) => {
+                chai.request(this._app)
                     .post(this._path)
-                    .send(artist)
+                    .send(this.setArtistContent(null, "Drake", null))
                     .end((err, res) => {
                         res.should.have.status(201);
                         res.body.should.be.a('object');
@@ -61,13 +80,15 @@ export default class ArtistTest {
                         done();
                     });
             });
-            });
+        });
+    }
 
-            describe ('/GET/:artist_id', () => {
-                it('it sould GET an artist by the given id', (done) => {
-                    let artist = new Artist({ name: "Drake", firstName: "Drake", lastName: "Graham" });
-                    artist.save((err, book) => {
-                        chai.request(this._app)
+    getByIdTest() {
+        describe ('/GET/:artist_id', () => {
+            it('it should GET an artist by the given id', (done) => {
+                let artist = new Artist(this.setArtistContent(null, "Drake", null));
+                artist.save((err, artist) => {
+                    chai.request(this._app)
                         .get(this._path + '/' + artist.id)
                         .end((err, res) => {
                             res.should.have.status(200);
@@ -81,17 +102,19 @@ export default class ArtistTest {
                             res.body.should.have.property('updatedAt');
                             done();
                         });
-                    });
                 });
             });
+        });
+    }
 
-            describe ('/PUT/:artist_id', () => {
-                it('it sould UPDATE an artist by the given id', (done) => {
-                    let artist = new Artist({ name: "Drake", firstName: "Drake", lastName: "Graham" });
-                    artist.save((err, book) => {
-                        chai.request(this._app)
+    updateTest() {
+        describe ('/PUT/:artist_id', () => {
+            it('it should UPDATE `firstName` attribute of an artist by the given id', (done) => {
+                let artist = new Artist(this.setArtistContent(null, "Drake", null));
+                artist.save((err, artist) => {
+                    chai.request(this._app)
                         .put(this._path + '/' + artist.id)
-                        .send({ name: "Drake", firstName: "Aubrey Drake", lastName: "Graham" })
+                        .send(this.getArtistContent())
                         .end((err, res) => {
                             res.should.have.status(200);
                             res.body.should.be.a('object');
@@ -99,15 +122,17 @@ export default class ArtistTest {
                             res.body.should.have.property('firstName').eql('Aubrey Drake');
                             done();
                         });
-                    });
                 });
             });
+        });
+    }
 
-            describe ('/DELETE/:artist_id', () => {
-                it('it sould DELETE an artist by the given id', (done) => {
-                    let artist = new Artist({ name: "Drake", firstName: "Aubrey Drake", lastName: "Graham" });
-                    artist.save((err, book) => {
-                        chai.request(this._app)
+    deleteTest() {
+        describe ('/DELETE/:artist_id', () => {
+            it('it should DELETE an artist by the given id', (done) => {
+                let artist = new Artist(this.getArtistContent());
+                artist.save((err, artist) => {
+                    chai.request(this._app)
                         .delete(this._path + '/' + artist.id)
                         .end((err, res) => {
                             res.should.have.status(200);
@@ -115,7 +140,6 @@ export default class ArtistTest {
                             res.body.should.have.property('success').eql(true);
                             done();
                         });
-                    });
                 });
             });
         });

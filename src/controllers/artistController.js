@@ -23,7 +23,7 @@ export default class ArtistController {
 		}).catch(err => {
 			console.log("Error retrieving artists :" + err);
 			return res.status(500).json({
-				error: 'Failed to find artists.'
+				error: 'Failed to find Artists.'
 			});
 		});
 	}
@@ -40,14 +40,14 @@ export default class ArtistController {
 		.then(artist => {
 			if(!artist) {
 				return res.status(404).json({
-					error: 'Artist doesn\'t exist.'
+					error: 'Artist does not exist.'
 				});
 			}
 			res.status(200).json(artist);
 		}).catch(err => {
 			console.log("Error retrieving Artist id ["+req.params.artist_id+"] :" + err);
 			return res.status(500).json({
-				error: "Error retrieving artist."
+				error: "Error retrieving Artist."
 			});
 		});
 	}
@@ -68,7 +68,7 @@ export default class ArtistController {
 		}).catch(err => {
 			console.log("Error Artist creation :" + err);
 			return res.status(500).json({
-				error: 'Failed to create an artist.'
+				error: 'Failed to create an Artist.'
 			});
 		});
 	}
@@ -85,13 +85,13 @@ export default class ArtistController {
 		.then(artist => {
 			if(!artist) {
 				return res.status(404).json({
-					error: 'Artist doesn\'t exist.'
+					error: 'Artist does not exist.'
 				});
 			}
 			res.status(200).json(artist);
 		}).catch(err => {
 			return res.status(500).json({
-				error: 'Failed to update artist.'
+				error: 'Failed to update Artist.'
 			});
 		});
 	}
@@ -108,16 +108,16 @@ export default class ArtistController {
 		.then(artist => {
 			if(!artist) {
 				return res.status(404).json({
-					error: 'Artist doesn\'t exist.'
+					error: 'Artist does not exist.'
 				});
 			}
 			
 			// Delete all Albums from Artist
 			Album.deleteMany({artist: req.params.artist_id}, function(err) { 
 				if(err != null) {
-					console.log('Error deleting album(s) of artist : ' + err);
+					console.log('Error deleting album(s) of Artist : ' + err);
 					return res.status(500).json({
-						error: 'Error deleting album(s) of artist.'
+						error: 'Error deleting album(s) of Artist.'
 					});
 				}
 			});
@@ -127,7 +127,7 @@ export default class ArtistController {
 			});
 		}).catch(err => {
 			return res.status(500).json({
-				error: 'Failed to delete artist.'
+				error: 'Failed to delete Artist.'
 			});
 		});
 	}

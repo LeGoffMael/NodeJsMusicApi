@@ -40,14 +40,14 @@ export default class AlbumController {
 		.then(album => {
 			if(!album) {
 				return res.status(404).json({
-					error: 'Album doesn\'t exist.'
+					error: 'Album does not exist.'
 				});
 			}
 			res.status(200).json(album);
 		}).catch(err => {
 			console.log("Error retrieving Album id ["+req.params.album_id+"] :" + err);
 			return res.status(500).json({
-				error: "Error retrieving album."
+				error: "Error retrieving Album."
 			});
 		});
 	}
@@ -61,11 +61,11 @@ export default class AlbumController {
 	 */
 	async create(req, res) {
 		// Check if artist is existing
-		Artist.findById(req.body.artist)
+		Artist.findById(req.body.artist).populate('artist', '_id name firstName lastName')
 		.then(artist => {
 			if(!artist) {
 				return res.status(404).json({
-					error: 'Artist doesn\'t exist.'
+					error: 'Artist does not exist.'
 				});
 			}
 			let album = new Album(req.body);
@@ -84,13 +84,13 @@ export default class AlbumController {
 			}).catch(err => {
 				console.log("Error Album creation :" + err);
 				return res.status(500).json({
-					error: 'Failed to create an album.'
+					error: 'Failed to create an Album.'
 				});
 			});		
 		}).catch(err => {
 			console.log("Error retrieving Artist id ["+req.params.artist_id+"] while Album creation :" + err);
 			return res.status(500).json({
-				error: "Error retrieving artist of album."
+				error: "Error retrieving artist of Album."
 			});
 		});
 	}
@@ -103,17 +103,17 @@ export default class AlbumController {
      * @returns data and status code
 	 */
 	async update(req, res) {
-		Album.findByIdAndUpdate(req.params.album_id, req.body, {new: true})
+		Album.findByIdAndUpdate(req.params.album_id, req.body, {new: true}).populate('artist', '_id name firstName lastName')
 		.then(album => {
 			if(!album) {
 				return res.status(404).json({
-					error: 'Album doesn\'t exist.'
+					error: 'Album does not exist.'
 				});
 			}
 			res.status(200).json(album);
 		}).catch(err => {
 			return res.status(500).json({
-				error: 'Failed to update album.'
+				error: 'Failed to update Album.'
 			});
 		});
 	}
@@ -130,7 +130,7 @@ export default class AlbumController {
 		.then(album => {
 			if(!album) {
 				return res.status(404).json({
-					error: 'Album doesn\'t exist.'
+					error: 'Album does not exist.'
 				});
 			}
 			
@@ -146,7 +146,7 @@ export default class AlbumController {
 			});
 		}).catch(err => {
 			return res.status(500).json({
-				error: 'Failed to update album.'
+				error: 'Failed to update Album.'
 			});
 		});
 	}
@@ -165,14 +165,14 @@ export default class AlbumController {
 			.then(artist => {
 				if(!artist) {
 					return res.status(404).json({
-						error: 'Artist doesn\'t exist.'
+						error: 'Artist does not exist.'
 					});
 				}
 				res.status(200).json(artist.albums);
 			}).catch(err => {
-			console.log("Error retrieving albums from artist id ["+req.params.artist_id+"] :" + err);
+			console.log("Error retrieving albums from Artist id ["+req.params.artist_id+"] :" + err);
 			return res.status(500).json({
-				error: "Error retrieving albums from artist."
+				error: "Error retrieving albums from Artist."
 			});
 		});
 	}
@@ -193,40 +193,85 @@ export default class AlbumController {
 
 	/**
 	 * GET /artists/:artist_id/albums/:album_id
-	 * TODO : Retrieve a single Album identified by the album_id and associated to the Artist identified by the artist_id
+	 * Retrieve a single Album identified by the album_id and associated to the Artist identified by the artist_id
 	 * @param {*} req express request
 	 * @param {*} res express response
 	 * @returns artist album data and status code
 	 */
 	async getArtistAlbumById(req, res) {
-		return res.status(501).json({
-			error: 'Endpoint not implemented yet.'
+		Artist.findById(req.params.artist_id)
+			.then(artist => {
+				if(!artist) {
+					return res.status(404).json({
+						error: 'Artist does not exist.'
+					});
+				} else if (artist.albums.indexOf(req.params.album_id) < 0) {
+					return res.status(404).json({
+						error: 'Album is not part of this Artist.'
+					});
+				}
+				return new AlbumController().getById(req, res);
+			}).catch(err => {
+			console.log("Error retrieving Artist id ["+req.params.artist_id+"] :" + err);
+			return res.status(500).json({
+				error: "Error retrieving Artist."
+			});
 		});
 	}
 
 	/**
 	 * PUT /artists/:artist_id/albums/:album_id
-	 * TODO : Update an Album identified by the album_id in the request and associated to the Artist identified by the artist_id
+	 * Update an Album identified by the album_id in the request and associated to the Artist identified by the artist_id
 	 * @param {*} req express request
 	 * @param {*} res express response
 	 * @returns data and status code
 	 */
 	async updateArtistAlbum(req, res) {
-		return res.status(501).json({
-			error: 'Endpoint not implemented yet.'
+		Artist.findById(req.params.artist_id)
+			.then(artist => {
+				if(!artist) {
+					return res.status(404).json({
+						error: 'Artist does not exist.'
+					});
+				} else if (artist.albums.indexOf(req.params.album_id) < 0) {
+					return res.status(404).json({
+						error: 'Album is not part of this Artist.'
+					});
+				}
+				return new AlbumController().update(req, res);
+			}).catch(err => {
+			console.log("Error retrieving Artist id ["+req.params.artist_id+"] :" + err);
+			return res.status(500).json({
+				error: "Error retrieving Artist."
+			});
 		});
 	}
 
 	/**
 	 * DELETE /artists/:artist_id/albums/:album_id
-	 * TODO : Delete an Album identified by the album_id and remove it from the associated Artist identified by the artist_id
+	 * Delete an Album identified by the album_id and remove it from the associated Artist identified by the artist_id
 	 * @param {*} req express request
 	 * @param {*} res express response
 	 * @returns success and status code
 	 */
 	async deleteArtistAlbum(req, res) {
-		return res.status(501).json({
-			error: 'Endpoint not implemented yet.'
+		Artist.findById(req.params.artist_id)
+			.then(artist => {
+				if(!artist) {
+					return res.status(404).json({
+						error: 'Artist does not exist.'
+					});
+				} else if (artist.albums.indexOf(req.params.album_id) < 0) {
+					return res.status(404).json({
+						error: 'Album is not part of this Artist.'
+					});
+				}
+				return new AlbumController().delete(req, res);
+			}).catch(err => {
+			console.log("Error retrieving Artist id ["+req.params.artist_id+"] :" + err);
+			return res.status(500).json({
+				error: "Error retrieving Artist."
+			});
 		});
 	}
 

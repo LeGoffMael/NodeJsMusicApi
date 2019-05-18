@@ -17,9 +17,20 @@ let albumSchema = mongoose.Schema({
     artist: { // No arrays, as we want to store a single ID only.
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Artist'
-    } ,
+    }
 },{
 	timestamps: true
+});
+
+albumSchema.virtual('links').get(function() {
+    return {
+        self: {
+            'href': '/api/v1/albums/' + this.id
+        },
+        related: {
+            'href': '/api/v1/albums'
+        }
+    }
 });
 
 // Export Album model
